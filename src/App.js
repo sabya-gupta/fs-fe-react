@@ -10,7 +10,7 @@ class App extends Component {
 
     partyprops : ['firstname', 'lastname', 'UCIF', 'GCIF'],
 
-    parties : [ //hard coded 123
+    parties : [ //hard coded 123 456 789
       {
         firstname:{key:"A", selected:false}, lastname:{key: "hadd", selected:false}, UCIF:{key:'121212', selected:false}, GCIF:{key:'L123', selected:false}
       },
