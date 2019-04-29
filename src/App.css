@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+}
+
+
+.PartyHeader {
+  width: 110px;
+  margin: auto;
+  border: 1px solid black;
+  box-shadow: 0 2px 3px #ccc;
+  padding: 1px;
+  text-align: center;
+  text-overflow: ellipsis;
+}
