@@ -2,34 +2,47 @@ import React, {Component} from 'react';
 
 import './App.css';
 
-import Party from './Party/Party'
+import Party from './Party/Party';
+
+import axios from './customaxios';
 
 class App extends Component {
 
   state = {
 
-    partyprops : ['firstname', 'lastname', 'UCIF', 'GCIF'],
+    partyprops : ['firstname', 'lastname', 'ucif', 'lcif'],
 
-    parties : [ //hard coded 123 456 789
-      {
-        firstname:{key:"A", selected:false}, lastname:{key: "hadd", selected:false}, UCIF:{key:'121212', selected:false}, GCIF:{key:'L123', selected:false}
-      },
-      {
-        firstname:{key: "Archie", selected:false}, lastname:{key: "Haddok", selected:false}, UCIF:{key: '234345', selected:false}, GCIF:{key:'L456', selected:false}
-      },
-      {
-        firstname:{key: "Archibald", selected:false}, lastname:{key: "Haddock", selected:false}, UCIF:{key:'987865', selected:false}, GCIF:{key:'L841', selected:false}
-      },
-      {
-        firstname:{key: "Archibal", selected:false}, lastname:{key: "Haddoc", selected:false}, UCIF:{key:'985', selected:false}, GCIF:{key:'L8400000001', selected:false}
-      },
-      {
-        firstname:{key: "Archie", selected:false}, lastname:{key: "Haddock", selected:false}, UCIF:{key: '987865', selected:false}, GCIF:{key:'L841', selected:false}
-      }
-    ],
+    // parties : [ //hard coded 123 456 789 890
+    //   {
+    //     firstname:{key:"A", selected:false}, lastname:{key: "hadd", selected:false}, ucif:{key:'121212', selected:false}, lcif:{key:'L123', selected:false}
+    //   },
+    //   {
+    //     firstname:{key: "Archie", selected:false}, lastname:{key: "Haddok", selected:false}, ucif:{key: '234345', selected:false}, lcif:{key:'L456', selected:false}
+    //   },
+    //   {
+    //     firstname:{key: "Archibald", selected:false}, lastname:{key: "Haddock", selected:false}, ucif:{key:'987865', selected:false}, lcif:{key:'L841', selected:false}
+    //   },
+    //   {
+    //     firstname:{key: "Archibal", selected:false}, lastname:{key: "Haddoc", selected:false}, ucif:{key:'985', selected:false}, lcif:{key:'L8400000001', selected:false}
+    //   },
+    //   {
+    //     firstname:{key: "Archie", selected:false}, lastname:{key: "Haddock", selected:false}, ucif:{key: '987865', selected:false}, lcif:{key:'L841', selected:false}
+    //   }
+    // ],
 
     setEditable: ['N', 'N', 'N', 'N']
   };
+
+  componentDidMount=()=>{
+    axios.get('/customersForMerge', 
+    {headers: {'AUTHCODE': '555555'}})
+      .then((res)=>{
+        console.log('>>>>>>>>>>>>>>>>>')
+        console.log(res.headers);
+        this.setState({parties: res.data}, ()=>console.log(this.state));
+      })
+      .catch(e=>console.log(e));
+  }
 
   handlePartyClick = (arr, fld) =>{
     console.log(this.state);
@@ -86,6 +99,7 @@ class App extends Component {
   }
 /** */
   render(){
+    if(!this.state.parties) return '';
     let persons = [];
     let headers=[];
     for(let i=0; i<this.state.parties.length; i++){
@@ -128,7 +142,7 @@ class App extends Component {
     <div>
         {this.state.parties.map((party, idx)=>{
           if(idx<(this.state.parties.length-1)){
-            return <td key='idx'>
+            return <td key={idx}>
               <Party 
               click={this.handlePartyClick} 
               party={party} 
@@ -137,7 +151,7 @@ class App extends Component {
               partyNum={idx} />
               </td>
           }else{
-            return <td key='idx'>
+            return <td key={idx}>
               <Party 
                 click={this.handlePartyClick} 
                 party={party} 
@@ -178,7 +192,6 @@ class App extends Component {
               <th>Suggested</th> */}
               {headers2}
             </tr>
-            <tr>
               {/* <td><Party click={this.handlePartyClick} party={this.state.parties[0]} partyprops={this.state.partyprops} partyNum={0} /></td>
               <td><Party click={this.handlePartyClick} party={this.state.parties[1]} partyprops={this.state.partyprops} partyNum={1}/></td>
               <td><Party click={this.handlePartyClick} party={this.state.parties[2]} partyprops={this.state.partyprops} partyNum={2}/></td>
@@ -190,7 +203,6 @@ class App extends Component {
                 handleOnlyOnBlur={this.handleOnlyOnBlur}
               /></td> */}
               {persons2}
-            </tr>
           </tbody>
         </table>
       </div>
